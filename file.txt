@@ -1,1 +1,1802 @@
-hello
+    src/App.jsx
+
+    import { useState } from "react";
+    import "./App.css";
+
+    function App() {
+      const [search, setSearch] = useState("");
+      const [cart, setCart] = useState([]);
+
+      const restaurants = [
+        {
+          id: 1,
+          name: "Burger King",
+          image: "🍔",
+          rating: "4.3",
+          time: "25-30 mins",
+          food: "Burgers, Fast Food",
+          price: 199,
+          color: "#fff0e5",
+        },
+        {
+          id: 2,
+          name: "Pizza Paradise",
+          image: "🍕",
+          rating: "4.5",
+          time: "30-35 mins",
+          food: "Pizza, Italian",
+          price: 299,
+          color: "#ffe9e9",
+        },
+        {
+          id: 3,
+          name: "Biryani House",
+          image: "🍛",
+          rating: "4.4",
+          time: "20-25 mins",
+          food: "Biryani, Indian",
+          price: 249,
+          color: "#fff3cc",
+        },
+        {
+          id: 4,
+          name: "Sweet Treats",
+          image: "🍰",
+          rating: "4.6",
+          time: "15-20 mins",
+          food: "Cakes, Desserts",
+          price: 149,
+          color: "#fce4ec",
+        },
+        {
+          id: 5,
+          name: "South Spice",
+          image: "🥘",
+          rating: "4.2",
+          time: "20-30 mins",
+          food: "Dosa, South Indian",
+          price: 129,
+          color: "#e8f5e9",
+        },
+        {
+          id: 6,
+          name: "Fresh Juice",
+          image: "🥤",
+          rating: "4.1",
+          time: "10-15 mins",
+          food: "Juices, Beverages",
+          price: 99,
+          color: "#e3f2fd",
+        },
+      ];
+
+      const filteredRestaurants = restaurants.filter((restaurant) =>
+        restaurant.name.toLowerCase().includes(search.toLowerCase())
+      );
+
+      function addToCart(restaurant) {
+        setCart([...cart, restaurant]);
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+      return (
+        <div className="app">
+          <header className="navbar">
+            <h1 className="logo">
+              swiggy<span>.</span>
+            </h1>
+
+            <div className="location">
+              📍 Bengaluru
+              <small> Karnataka, India</small>
+            </div>
+
+            <nav>
+              <a href="#home">Home</a>
+              <a href="#restaurants">Restaurants</a>
+              <a href="#about">About</a>
+              <a href="#cart">🛒 Cart ({cart.length})</a>
+            </nav>
+          </header>
+
+          <section className="hero" id="home">
+            <div className="hero-text">
+              <p className="tagline">HUNGRY? YOU'RE IN THE RIGHT PLACE!</p>
+
+              <h2>
+                Good food.
+                <br />
+                Good mood.
+                <br />
+                <span>Delivered.</span>
+              </h2>
+
+              <p className="description">
+                Order your favourite food from the best restaurants near you.
+              </p>
+
+              <div className="search-box">
+                <input
+                  type="text"
+                  placeholder="Search restaurants..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("restaurants")
+                      .scrollIntoView({ behavior: "smooth" })
+                  }
+                >
+                  Search
+                </button>
+              </div>
+            </div>
+
+            <div className="hero-image">
+              <div className="food-circle">🍕</div>
+              <span className="floating-food burger">🍔</span>
+              <span className="floating-food fries">🍟</span>
+              <span className="floating-food drink">🥤</span>
+              <div className="delivery-badge">
+                ⚡ Fast Delivery
+                <br />
+                <small>Fresh & Delicious</small>
+              </div>
+            </div>
+          </section>
+
+          <section className="categories">
+            <h2>What are you craving?</h2>
+
+            <div className="category-list">
+              <div className="category">🍕<span>Pizza</span></div>
+              <div className="category">🍔<span>Burgers</span></div>
+              <div className="category">🍛<span>Biryani</span></div>
+              <div className="category">🍰<span>Desserts</span></div>
+              <div className="category">🥗<span>Healthy</span></div>
+              <div className="category">🥤<span>Drinks</span></div>
+            </div>
+          </section>
+
+          <section className="restaurants" id="restaurants">
+            <div className="section-heading">
+              <div>
+                <p className="section-tag">YOUR NEXT FAVOURITE MEAL</p>
+                <h2>Popular Restaurants</h2>
+              </div>
+              <span>🍽️ Delicious choices</span>
+            </div>
+
+            <div className="restaurant-grid">
+              {filteredRestaurants.map((restaurant) => (
+                <div className="restaurant-card" key={restaurant.id}>
+                  <div
+                    className="restaurant-image"
+                    style={{ backgroundColor: restaurant.color }}
+                  >
+                    <span>{restaurant.image}</span>
+                    <div className="offer">SPECIAL OFFER</div>
+                  </div>
+
+                  <div className="restaurant-info">
+                    <h3>{restaurant.name}</h3>
+
+                    <p className="rating">
+                      ⭐ {restaurant.rating} · {restaurant.time}
+                    </p>
+
+                    <p className="food-type">{restaurant.food}</p>
+
+                    <div className="card-bottom">
+                      <strong>₹{restaurant.price}</strong>
+
+                      <button onClick={() => addToCart(restaurant)}>
+                        + Add
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {filteredRestaurants.length === 0 && (
+              <p className="empty-message">
+                No restaurants found. Try another search.
+              </p>
+            )}
+          </section>
+
+          <section className="cart-section" id="cart">
+            <h2>🛒 Your Cart</h2>
+
+            {cart.length === 0 ? (
+              <p>Your cart is empty. Add something delicious!</p>
+            ) : (
+              <>
+                {cart.map((item, index) => (
+                  <div className="cart-item" key={`${item.id}-${index}`}>
+                    <span>{item.image} {item.name}</span>
+                    <strong>₹{item.price}</strong>
+                  </div>
+                ))}
+
+                <h3>Total: ₹{total}</h3>
+
+                <button
+                  className="clear-cart"
+                  onClick={() => setCart([])}
+                >
+                  Clear Cart
+                </button>
+              </>
+            )}
+          </section>
+
+          <footer id="about">
+            <h2>swiggy<span>.</span></h2>
+            <p>Bringing happiness to your doorstep.</p>
+            <p>© 2026 Swiggy-Inspired Food Delivery Demo</p>
+          </footer>
+        </div>
+      );
+    }
+
+    export default App;
+
+    Save the File
+
+    Press these keys in Nano:
+        Ctrl + O — Save.
+        Enter — Confirm.
+        Ctrl + X — Exit.
+    4. Add Colors and Styling
+
+    Open the CSS file:
+
+    nano src/App.css
+
+    Paste the following code.
+    src/App.css
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #fffaf6;
+      color: #292929;
+    }
+
+    .app {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 7%;
+      background: white;
+      box-shadow: 0 2px 12px #0000000d;
+    }
+
+    .logo,
+    footer h2 {
+      color: #fc8019;
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    .logo span,
+    footer span {
+      color: #292929;
+    }
+
+    .location {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .location small {
+      display: block;
+      color: #777;
+      font-weight: 400;
+    }
+
+    .navbar nav {
+      display: flex;
+      gap: 25px;
+    }
+
+    .navbar nav a {
+      text-decoration: none;
+      color: #333;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .navbar nav a:hover {
+      color: #fc8019;
+    }
+
+    .hero {
+      min-height: 500px;
+      padding: 65px 9%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(120deg, #fff0e3, #fffaf6, #ffe6d4);
+    }
+
+    .hero-text {
+      max-width: 560px;
+    }
+
+    .tagline,
+    .section-tag {
+      color: #fc8019;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .hero h2 {
+      font-size: clamp(40px, 5vw, 65px);
+      line-height: 1.15;
+      font-weight: 800;
+    }
+
+    .hero h2 span {
+      color: #fc8019;
+    }
+
+    .description {
+      margin: 20px 0;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      background: white;
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 5px 20px #0000000d;
+    }
+
+    .search-box input {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border: none;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .search-box button,
+    .card-bottom button {
+      border: none;
+      background: #fc8019;
+      color: white;
+      padding: 12px 22px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .search-box button:hover,
+    .card-bottom button:hover {
+      background: #e66d08;
+    }
+
+    .hero-image {
+      position: relative;
+      width: 330px;
+      height: 330px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .food-circle {
+      width: 260px;
+      height: 260px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fc8019;
+      border: 12px solid white;
+      border-radius: 50%;
+      font-size: 135px;
+      box-shadow: 0 15px 40px #fc801933;
+    }
+
+    .floating-food {
+      position: absolute;
+      font-size: 45px;
+      background: white;
+      padding: 10px;
+      border-radius: 50%;
+      box-shadow: 0 5px 20px #00000012;
+    }
+
+    .burger {
+      top: 5px;
+      left: 0;
+    }
+
+    .fries {
+      right: 0;
+      top: 65px;
+    }
+
+    .drink {
+      bottom: 5px;
+      left: 15px;
+    }
+
+    .delivery-badge {
+      position: absolute;
+      bottom: 15px;
+      right: -15px;
+      background: white;
+      padding: 14px;
+      border-radius: 12px;
+      color: #fc8019;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 5px 20px #00000012;
+    }
+
+    .delivery-badge small {
+      color: #777;
+      font-weight: 400;
+    }
+
+    .categories,
+    .restaurants,
+    .cart-section {
+      padding: 65px 9%;
+    }
+
+    .categories h2,
+    .restaurants h2,
+    .cart-section h2 {
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .category-list {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 20px;
+    }
+
+    .category {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 25px 10px;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 5px 20px #00000008;
+      font-size: 40px;
+      transition: 0.3s;
+    }
+
+    .category:hover {
+      transform: translateY(-5px);
+      background: #fff0e3;
+    }
+
+    .category span {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .restaurants {
+      background: #fff3e9;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .section-heading h2 {
+      margin-bottom: 0;
+    }
+
+    .section-heading > span {
+      color: #fc8019;
+      font-size: 14px;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .restaurant-card {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px #0000000a;
+      transition: 0.3s;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px #00000012;
+    }
+
+    .restaurant-image {
+      height: 175px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .restaurant-image > span {
+      font-size: 95px;
+      transition: 0.3s;
+    }
+
+    .restaurant-card:hover .restaurant-image > span {
+      transform: scale(1.1);
+    }
+
+    .offer {
+      position: absolute;
+      bottom: 10px;
+      left: 12px;
+      color: white;
+      background: #fc8019;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .restaurant-info {
+      padding: 20px;
+    }
+
+    .restaurant-info h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .rating {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .food-type {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+    }
+
+    .card-bottom strong {
+      font-size: 18px;
+    }
+
+    .card-bottom button {
+      padding: 8px 20px;
+      background: white;
+      color: #198754;
+      border: 1px solid #198754;
+    }
+
+    .card-bottom button:hover {
+      background: #198754;
+      color: white;
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .cart-section {
+      background: white;
+    }
+
+    .cart-section > p {
+      color: #777;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-section h3 {
+      margin-top: 20px;
+      color: #198754;
+    }
+
+    .clear-cart {
+      margin-top: 15px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #dc3545;
+      color: white;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 45px 20px;
+      background: #252525;
+      color: white;
+    }
+
+    footer h2 {
+      margin-bottom: 10px;
+    }
+
+    footer p {
+      color: #ccc;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .navbar {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .hero {
+        padding: 50px 6%;
+      }
+
+      .hero-image {
+        transform: scale(0.8);
+      }
+
+      .category-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .restaurant-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 18px 5%;
+      }
+
+      .navbar nav {
+        width: 100%;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .location {
+        display: none;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 45px 6%;
+      }
+
+      .hero-image {
+        margin-top: 30px;
+        transform: scale(0.85);
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .categories,
+      .restaurants,
+      .cart-section {
+        padding: 40px 6%;
+      }
+
+      .category-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .restaurant-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+
+    Save the file using Ctrl + O, press Enter, and exit with Ctrl + X.
+    5. Configure the React Entry Point
+
+    Open:
+
+    nano src/main.jsx
+
+    Replace its contents with:
+
+    import { StrictMode } from "react";
+    import { createRoot } from "react-dom/client";
+    import App from "./App.jsx";
+    import "./App.css";
+
+    createRoot(document.getElementById("root")).render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+
+    Save and exit Nano.
+    6. Run the Website
+
+    Make sure you are inside the frontend directory:
+
+    cd ~/swiggy-project/frontend
+
+    If you created the project elsewhere, navigate to its actual location instead.
+
+    Start the development server:
+
+    npm run dev
+
+    The terminal will display a local URL, usually:
+
+    http://localhost:5173/
+
+    Open that URL in your browser.
+
+    You should see your colorful Swiggy-inspired food delivery home page.
+    7. Add a Node.js and Express Backend
+
+    The website currently uses sample restaurant data stored in React. To turn it into a full MERN project, let's create a backend API.
+
+    Open a second terminal and navigate to the project directory:
+
+    cd swiggy-project
+    mkdir backend
+    cd backend
+    npm init -y
+    npm install express mongoose cors dotenv
+
+    Create the backend file:
+
+    nano server.js
+
+    Paste this code:
+
+    const express = require("express");
+    const mongoose = require("mongoose");
+    const cors = require("cors");
+    require("dotenv").config();
+
+    const app = express();
+
+    app.use(cors());
+    app.use(express.json());
+
+    const restaurantSchema = new mongoose.Schema({
+      name: String,
+      cuisine: String,
+      rating: Number,
+      price: Number,
+    });
+
+    const Restaurant = mongoose.model(
+      "Restaurant",
+      restaurantSchema
+    );
+
+    app.get("/", (req, res) => {
+      res.send("Swiggy Food Delivery API is running");
+    });
+
+    app.get("/api/restaurants", async (req, res) => {
+      try {
+        const restaurants = await Restaurant.find();
+        res.json(restaurants);
+      } catch (error) {
+        res.status(500).json({
+          message: "Unable to fetch restaurants",
+        });
+      }
+    });
+
+    app.post("/api/restaurants", async (req, res) => {
+      try {
+        const restaurant = await Restaurant.create(req.body);
+        res.status(201).json(restaurant);
+      } catch (error) {
+        res.status(400).json({
+          message: "Unable to create restaurant",
+        });
+      }
+    });
+
+    const PORT = process.env.PORT || 5000;
+
+    async function startServer() {
+      try {
+        if (!process.env.MONGO_URI) {
+          throw new Error("MONGO_URI is missing from .env");
+        }
+
+        await mongoose.connect(process.env.MONGO_URI);
+
+        app.listen(PORT, () => {
+          console.log(`Server running on port ${PORT}`);
+        });
+      } catch (error) {
+        console.error("Server startup failed:", error.message);
+        process.exit(1);
+      }
+    }
+
+    startServer();
+
+    Save the file.
+    Configure MongoDB
+
+    Create a .env file:
+
+    nano .env
+
+    Add your MongoDB connection string:
+
+    MONGO_URI=mongodb://127.0.0.1:27017/swiggy
+    PORT=5000
+
+    Save and exit.
+
+    This connection string assumes MongoDB is installed and running locally. If you use MongoDB Atlas, replace it with your Atlas connection string.
+
+    Start the backend:
+
+    node server.js
+
+    If the database connection succeeds, you should see:
+
+    Server running on port 5000
+
+    Open this URL in your browser to test the API:
+
+    http://localhost:5000/
+
+    Expected response:
+
+    Swiggy Food Delivery API is running
+
+    The restaurant API is available at:
+
+    http://localhost:5000/api/restaurants
+
+    It will return an empty array until you add restaurant records to MongoDB.
+    8. Project Folder Structure
+
+    Your project should look like this:
+
+    swiggy-project/
+    │
+    ├── frontend/
+    │   ├── index.html
+    │   ├── package.json
+    │   └── src/
+    │       ├── App.jsx
+    │       ├── App.css
+    │       └── main.jsx
+    │
+    └── backend/
+        ├── server.js
+        ├── package.json
+        └── .env
+
+    Important: Do not upload your .env file or database credentials to GitHub.
+    9. What Works in This Project?
+    Feature	Status
+    Colorful home page	Implemented
+    Restaurant cards	Implemented with sample data
+    Search restaurants	Implemented
+    Add food to cart	Implemented
+    Cart total	Implemented
+    Responsive design	Implemented
+    Express backend	Implemented
+    MongoDB connection	Configured
+    Restaurant API	Implemented
+    Live restaurant data from MongoDB in React	Not connected yet
+    User login and registration	Not implemented
+    Online payments	Not implemented
+    Real Swiggy ordering service	Not implemented
+
+    This is a Swiggy-inspired educational project, not the official Swiggy website. The restaurant names, prices, and ratings are sample data.
+    Next Step
+
+    The next improvement should be to connect the React frontend to the Express and MongoDB backend, so restaurant data comes from the database instead of the sample array.
+    You said:
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+
+        html {
+          scroll-behavior: smooth;
+        }
+
+        body {
+          font-family: 'Poppins', sans-serif;
+          background: #fffaf6;
+          color: #292929;
+        }
+
+        .app {
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .navbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 7%;
+          background: white;
+          box-shadow: 0 2px 12px #0000000d;
+        }
+
+        .logo,
+        footer h2 {
+          color: #fc8019;
+          font-size: 32px;
+          font-weight: 800;
+        }
+
+        .logo span,
+        footer span {
+          color: #292929;
+        }
+
+        .location {
+          font-weight: 600;
+          font-size: 14px;
+        }
+
+        .location small {
+          display: block;
+          color: #777;
+          font-weight: 400;
+        }
+
+        .navbar nav {
+          display: flex;
+          gap: 25px;
+        }
+
+        .navbar nav a {
+          text-decoration: none;
+          color: #333;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .navbar nav a:hover {
+          color: #fc8019;
+        }
+
+        .hero {
+          min-height: 500px;
+          padding: 65px 9%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: linear-gradient(120deg, #fff0e3, #fffaf6, #ffe6d4);
+        }
+
+        .hero-text {
+          max-width: 560px;
+        }
+
+        .tagline,
+        .section-tag {
+          color: #fc8019;
+          font-size: 12px;
+          font-weight: 700;
+          letter-spacing: 2px;
+          margin-bottom: 15px;
+        }
+
+        .hero h2 {
+          font-size: clamp(40px, 5vw, 65px);
+          line-height: 1.15;
+          font-weight: 800;
+        }
+
+        .hero h2 span {
+          color: #fc8019;
+        }
+
+        .description {
+          margin: 20px 0;
+          color: #666;
+          line-height: 1.8;
+        }
+
+        .search-box {
+          display: flex;
+          gap: 10px;
+          background: white;
+          padding: 8px;
+          border-radius: 12px;
+          box-shadow: 0 5px 20px #0000000d;
+        }
+
+        .search-box input {
+          flex: 1;
+          min-width: 0;
+          padding: 12px;
+          border: none;
+          outline: none;
+          font-family: inherit;
+        }
+
+        .search-box button,
+        .card-bottom button {
+          border: none;
+          background: #fc8019;
+          color: white;
+          padding: 12px 22px;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 600;
+        }
+
+        .search-box button:hover,
+        .card-bottom button:hover {
+          background: #e66d08;
+        }
+
+        .hero-image {
+          position: relative;
+          width: 330px;
+          height: 330px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .food-circle {
+          width: 260px;
+          height: 260px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: #fc8019;
+          border: 12px solid white;
+          border-radius: 50%;
+          font-size: 135px;
+          box-shadow: 0 15px 40px #fc801933;
+        }
+
+        .floating-food {
+          position: absolute;
+          font-size: 45px;
+          background: white;
+          padding: 10px;
+          border-radius: 50%;
+          box-shadow: 0 5px 20px #00000012;
+        }
+
+        .burger {
+          top: 5px;
+          left: 0;
+        }
+
+        .fries {
+          right: 0;
+          top: 65px;
+        }
+
+        .drink {
+          bottom: 5px;
+          left: 15px;
+        }
+
+        .delivery-badge {
+          position: absolute;
+          bottom: 15px;
+          right: -15px;
+          background: white;
+          padding: 14px;
+          border-radius: 12px;
+          color: #fc8019;
+          font-size: 13px;
+          font-weight: 700;
+          box-shadow: 0 5px 20px #00000012;
+        }
+
+        .delivery-badge small {
+          color: #777;
+          font-weight: 400;
+        }
+
+        .categories,
+        .restaurants,
+        .cart-section {
+          padding: 65px 9%;
+        }
+
+        .categories h2,
+        .restaurants h2,
+        .cart-section h2 {
+          font-size: 28px;
+          margin-bottom: 30px;
+        }
+
+        .category-list {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          gap: 20px;
+        }
+
+        .category {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          padding: 25px 10px;
+          border-radius: 16px;
+          background: white;
+          box-shadow: 0 5px 20px #00000008;
+          font-size: 40px;
+          transition: 0.3s;
+        }
+
+        .category:hover {
+          transform: translateY(-5px);
+          background: #fff0e3;
+        }
+
+        .category span {
+          font-size: 13px;
+          font-weight: 600;
+        }
+
+        .restaurants {
+          background: #fff3e9;
+        }
+
+        .section-heading {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 30px;
+        }
+
+        .section-heading h2 {
+          margin-bottom: 0;
+        }
+
+        .section-heading > span {
+          color: #fc8019;
+          font-size: 14px;
+        }
+
+        .restaurant-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 25px;
+        }
+
+        .restaurant-card {
+          background: white;
+          border-radius: 18px;
+          overflow: hidden;
+          box-shadow: 0 5px 20px #0000000a;
+          transition: 0.3s;
+        }
+
+        .restaurant-card:hover {
+          transform: translateY(-6px);
+          box-shadow: 0 12px 30px #00000012;
+        }
+
+        .restaurant-image {
+          height: 175px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+
+        .restaurant-image > span {
+          font-size: 95px;
+          transition: 0.3s;
+        }
+
+        .restaurant-card:hover .restaurant-image > span {
+          transform: scale(1.1);
+        }
+
+        .offer {
+          position: absolute;
+          bottom: 10px;
+          left: 12px;
+          color: white;
+          background: #fc8019;
+          padding: 6px 10px;
+          border-radius: 5px;
+          font-size: 10px;
+          font-weight: 700;
+        }
+
+        .restaurant-info {
+          padding: 20px;
+        }
+
+        .restaurant-info h3 {
+          font-size: 18px;
+          margin-bottom: 8px;
+        }
+
+        .rating {
+          font-size: 12px;
+          font-weight: 600;
+          margin-bottom: 8px;
+        }
+
+        .food-type {
+          color: #777;
+          font-size: 12px;
+        }
+
+        .card-bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-top: 18px;
+        }
+
+        .card-bottom strong {
+          font-size: 18px;
+        }
+
+        .card-bottom button {
+          padding: 8px 20px;
+          background: white;
+          color: #198754;
+          border: 1px solid #198754;
+        }
+
+        .card-bottom button:hover {
+          background: #198754;
+          color: white;
+        }
+
+        .empty-message {
+          text-align: center;
+          padding: 30px;
+        }
+
+        .cart-section {
+          background: white;
+        }
+
+        .cart-section > p {
+          color: #777;
+        }
+
+        .cart-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 15px 0;
+          border-bottom: 1px solid #eee;
+        }
+
+        .cart-section h3 {
+          margin-top: 20px;
+          color: #198754;
+        }
+
+        .clear-cart {
+          margin-top: 15px;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 8px;
+          background: #dc3545;
+          color: white;
+          cursor: pointer;
+        }
+
+        footer {
+          text-align: center;
+          padding: 45px 20px;
+          background: #252525;
+          color: white;
+        }
+
+        footer h2 {
+          margin-bottom: 10px;
+        }
+
+        footer p {
+          color: #ccc;
+          font-size: 13px;
+          margin-top: 10px;
+        }
+
+        @media (max-width: 900px) {
+          .navbar {
+            flex-wrap: wrap;
+            gap: 20px;
+          }
+
+          .hero {
+            padding: 50px 6%;
+          }
+
+          .hero-image {
+            transform: scale(0.8);
+          }
+
+          .category-list {
+            grid-template-columns: repeat(3, 1fr);
+          }
+
+          .restaurant-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+
+        @media (max-width: 600px) {
+          .navbar {
+            padding: 18px 5%;
+          }
+
+          .navbar nav {
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 15px;
+          }
+
+          .location {
+            display: none;
+          }
+
+          .hero {
+            flex-direction: column;
+            text-align: center;
+            padding: 45px 6%;
+          }
+
+          .hero-image {
+            margin-top: 30px;
+            transform: scale(0.85);
+          }
+
+          .search-box {
+            width: 100%;
+          }
+
+          .categories,
+          .restaurants,
+          .cart-section {
+            padding: 40px 6%;
+          }
+
+          .category-list {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .restaurant-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .section-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 10px;
+          }
+        }
+
+        Save the file using Ctrl + O, press Enter, and exit with Ctrl + X.
+        5. Configure the React Entry Point
+
+        Open:
+
+        nano src/main.jsx
+
+        Replace its contents with:
+
+        import { StrictMode } from "react";
+        import { createRoot } from "react-dom/client";
+        import App from "./App.jsx";
+        import "./App.css";
+
+        createRoot(document.getElementById("root")).render(
+          <StrictMode>
+            <App />
+          </StrictMode>
+        );
+
+        Save and exit Nano.
+        6. Run the Website
+
+        Make sure you are inside the frontend directory:
+
+        cd ~/swiggy-project/frontend
+
+        If you created the project elsewhere, navigate to its actual location instead.
+
+        Start the development server:
+
+        npm run dev
+
+        The terminal will display a local URL, usually:
+
+        http://localhost:5173/
+
+        Open that URL in your browser.
+
+        You should see your colorful Swiggy-inspired food delivery home page.
+        7. Add a Node.js and Express Backend
+
+        The website currently uses sample restaurant data stored in React. To turn it into a full MERN project, let's create a backend API.
+
+        Open a second terminal and navigate to the project directory:
+
+        cd swiggy-project
+        mkdir backend
+        cd backend
+        npm init -y
+        npm install express mongoose cors dotenv
+
+        Create the backend file:
+
+        nano server.js
+
+        Paste this code:
+
+        const express = require("express");
+        const mongoose = require("mongoose");
+        const cors = require("cors");
+        require("dotenv").config();
+
+        const app = express();
+
+        app.use(cors());
+        app.use(express.json());
+
+        const restaurantSchema = new mongoose.Schema({
+          name: String,
+          cuisine: String,
+          rating: Number,
+          price: Number,
+        });
+
+        const Restaurant = mongoose.model(
+          "Restaurant",
+          restaurantSchema
+        );
+
+        app.get("/", (req, res) => {
+          res.send("Swiggy Food Delivery API is running");
+        });
+
+        app.get("/api/restaurants", async (req, res) => {
+          try {
+            const restaurants = await Restaurant.find();
+            res.json(restaurants);
+          } catch (error) {
+            res.status(500).json({
+              message: "Unable to fetch restaurants",
+            });
+          }
+        });
+
+        app.post("/api/restaurants", async (req, res) => {
+          try {
+            const restaurant = await Restaurant.create(req.body);
+            res.status(201).json(restaurant);
+          } catch (error) {
+            res.status(400).json({
+              message: "Unable to create restaurant",
+            });
+          }
+        });
+
+        const PORT = process.env.PORT || 5000;
+
+        async function startServer() {
+          try {
+            if (!process.env.MONGO_URI) {
+              throw new Error("MONGO_URI is missing from .env");
+            }
+
+            await mongoose.connect(process.env.MONGO_URI);
+
+            app.listen(PORT, () => {
+              console.log(`Server running on port ${PORT}`);
+            });
+          } catch (error) {
+            console.error("Server startup failed:", error.message);
+            process.exit(1);
+          }
+        }
+
+        startServer();
+
+        Save the file.
+        Configure MongoDB
+
+        Create a .env file:
+
+        nano .env
+
+        Add your MongoDB connection string:
+
+        MONGO_URI=mongodb://127.0.0.1:27017/swiggy
+        PORT=5000
+
+        Save and exit.
+
+        This connection string assumes MongoDB is installed and running locally. If you use MongoDB Atlas, replace it with your Atlas connection string.
+
+        Start the backend:
+
+        node server.js
+
+        If the database connection succeeds, you should see:
+
+        Server running on port 5000
+
+        Open this URL in your browser to test the API:
+
+        http://localhost:5000/
+
+        Expected response:
+
+        Swiggy Food Delivery API is running
+
+        The restaurant API is available at:
+
+        http://localhost:5000/api/restaurants
+
+        It will return an empty array until you add restaurant records to MongoDB.
+        8. Project Folder Structure
+
+        Your project should look like this:
+
+        swiggy-project/
+        │
+        ├── frontend/
+        │   ├── index.html
+        │   ├── package.json
+        │   └── src/
+        │       ├── App.jsx
+        │       ├── App.css
+        │       └── main.jsx
+        │
+        └── backend/
+            ├── server.js
+            ├── package.json
+            └── .env
+
+        Important: Do not upload your .env file or database credentials to GitHub.
+        9. What Works in This Project?
+        Feature	Status
+        Colorful home page	Implemented
+        Restaurant cards	Implemented with sample data
+        Search restaurants	Implemented
+        Add food to cart	Implemented
+        Cart total	Implemented
+        Responsive design	Implemented
+        Express backend	Implemented
+        MongoDB connection	Configured
+        Restaurant API	Implemented
+        Live restaurant data from MongoDB in React	Not connected yet
+        User login and registration	Not implemented
+        Online payments	Not implemented
+        Real Swiggy ordering service	Not implemented
+
+        This is a Swiggy-inspired educational project, not the official Swiggy website. The restaurant names, prices, and ratings are sample data.
+        Next Step
+
+        The next improvement should be to connect the React frontend to the Express and MongoDB backend, so restaurant data comes from the database instead of the sample array.
+
+    ChatGPT is AI and can make mistakes.
+
+    how to do this
+    ChatGPT said:
+
+    I'll guide you step by step to create your Swiggy MERN Stack Project using the Nano editor. You don't need to do everything at once. First, let's get your colorful website running.
+    Step 1: Open the Terminal
+
+    Open your Linux terminal and enter these commands one by one.
+
+    Create the project folder:
+
+    mkdir swiggy-project
+
+    Enter the folder:
+
+    cd swiggy-project
+
+    Step 2: Create the React Frontend
+
+    Run:
+
+    npm create vite@latest frontend -- --template react
+
+    If prompted to install a package, type y and press Enter.
+
+    Next, enter:
+
+    cd frontend
+
+    Install the dependencies:
+
+    npm install
+
+    Step 3: Open the CSS File Using Nano
+
+    Type:
+
+    nano src/App.css
+
+    Now you are inside the Nano editor.
+
+    Important: Copy only the CSS code, starting with:
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+    and ending with the final closing brace } of the mobile media query.
+
+    Do not copy the explanatory text such as "Save the file using Ctrl + O" into the CSS file.
+    Save the CSS file
+        Press Ctrl + O.
+        Press Enter.
+        Press Ctrl + X.
+
+    Your CSS file is now saved.
+    Step 4: Create the React Home Page
+
+    In the terminal, type:
+
+    nano src/App.jsx
+
+    Delete the existing contents and paste the React code from the earlier instructions, beginning with:
+
+    import { useState } from "react";
+    import "./App.css";
+
+    function App() {
+
+    Continue copying the entire program until the end:
+
+    export default App;
+
+    Save the file:
+        Press Ctrl + O.
+        Press Enter.
+        Press Ctrl + X.
+    Step 5: Configure the Main React File
+
+    Open:
+
+    nano src/main.jsx
+
+    Replace its contents with:
+
+    import { StrictMode } from "react";
+    import { createRoot } from "react-dom/client";
+    import App from "./App.jsx";
+    import "./App.css";
+
+    createRoot(document.getElementById("root")).render(
+      <StrictMode>
+        <App />
+      </StrictMode>
+    );
+
+    Save using Ctrl + O, press Enter, and exit with Ctrl + X.
+    Step 6: Run Your Website
+
+    Make sure you are inside the frontend folder.
+
+    Run:
+
+    npm run dev
+
+    You should see output similar to:
+
+    VITE ready
+
+    Local: http://localhost:5173/
+
+    Open your browser and visit:
+
+    http://localhost:5173/
+
+    Your Swiggy-inspired website should appear with its orange theme, restaurant cards, search bar, and cart.
+
+    Keep the terminal running while you use the website.
+    Step 7: Create the MERN Backend Later
+
+    Once the frontend works, you can create the backend.
+
+    Open a second terminal and navigate to your project folder. For example, if you created it in your home directory:
+
+    cd ~/swiggy-project
+
+    Create the backend:
+
+    mkdir backend
+    cd backend
+    npm init -y
+    npm install express mongoose cors dotenv
+
+    Then create the server file:
+
+    nano server.js
+
+    You can paste the Express and MongoDB code from the earlier instructions into this file.
+
+    Note: The backend also requires a working MongoDB connection. You can set that up after confirming the frontend works.
+    Let's do it together
+
+    First, tell me which situation applies to you:
+        A. I have opened the Linux terminal.
+        B. I have already created the swiggy-project folder.
+        C. I have already opened Nano and pasted the CSS code.
+        D. I am getting an error.
+
+    I'll guide you through the next step based on where you are.
+    Emergent Labs
+    Build Real Apps Without Code
+    Describe your idea, Emergent builds a production-ready app in minutes. Free — 10 credits included.
+    Ad
+
+ChatGPT is AI and can make mistakes.
+
